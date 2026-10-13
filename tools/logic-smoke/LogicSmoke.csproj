@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <AssemblyName>LogicSmoke</AssemblyName>
+    <RootNamespace>Breakout.Tools</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <InvariantGlobalization>true</InvariantGlobalization>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <!-- 直接引用游戏里的纯 C# 逻辑文件，保证「测试跑的就是游戏用的那份代码」 -->
+    <Compile Include="../../Assets/Scripts/GameState.cs" />
+    <Compile Include="../../Assets/Scripts/PaymentService.cs" />
+  </ItemGroup>
+
+</Project>

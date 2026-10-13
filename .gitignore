@@ -1,0 +1,29 @@
+# Unity 生成目录（不需要提交）
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+MemoryCaptures/
+Recordings/
+
+# IDE / 系统
+.vs/
+.idea/
+*.user
+*.pidb
+*.booproj
+*.svd
+*.userprefs
+.DS_Store
+
+# Unity 会在项目根目录自动生成的解决方案/工程文件（这些不该提交）
+# 注意：只忽略根目录的，tools/ 下我们自己写的 LogicSmoke.csproj 必须提交（CI 需要）
+/*.csproj
+/*.sln
+
+# .NET 构建产物（逻辑自检脚本产生）
+bin/
+obj/

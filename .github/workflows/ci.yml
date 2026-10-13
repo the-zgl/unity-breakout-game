@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  # ---- 无需 Unity License 的轻量校验：C# 语法 + 单元测试逻辑 ----
+  syntax-and-logic:
+    name: C# 语法与逻辑校验
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      # 纯 C# 逻辑（GameState / PaymentService）不依赖 UnityEngine，直接用标准 .NET
+      # 编译并跑一遍自检脚本，PR 秒级反馈，且不需要 Unity License。
+      - name: Run pure C# logic smoke tests
+        run: dotnet run --project tools/logic-smoke/LogicSmoke.csproj
+
+  # ---- Unity 官方 Test Runner（需要 UNITY_LICENSE secret，未配置时自动跳过）----
+  unity-editmode-tests:
+    name: Unity EditMode 单元测试
+    runs-on: ubuntu-latest
+    if: ${{ vars.ENABLE_UNITY_CI == 'true' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - uses: actions/cache@v4
+        with:
+          path: Library
+          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-
+
+      - uses: game-ci/unity-test-runner@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          testMode: editmode
+          artifactsPath: test-results
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: unity-test-results
+          path: test-results
