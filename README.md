@@ -1,9 +1,18 @@
 # Unity 休闲小游戏（打砖块）+ 自动化测试
 
+![CI](https://github.com/<你的用户名>/unity-breakout-game/actions/workflows/ci.yml/badge.svg)
+![Unity](https://img.shields.io/badge/Unity-2022.3%20LTS-blue)
+![C#](https://img.shields.io/badge/C%23-10%2B-239120)
+![Tests](https://img.shields.io/badge/tests-30-brightgreen)
+
 一个 **游戏测试开发** 方向的实践项目：用 **Unity 2D + C#** 做一个可直接游玩的休闲小游戏，
 并把核心业务逻辑抽成纯 C# 类、用 **Unity Test Framework** 覆盖，接入 **GitHub Actions** 持续集成。
 
 > 目标：`clone` 下来打开工程按 **Play** 就能玩；不装 Unity 也能用 `dotnet` 验证核心逻辑是对的。
+>
+> **当前状态（本机实测，非设想）**：Unity 2022.3.62f1 下 **EditMode 28 条 + PlayMode 2 条 = 30 条全绿**；
+> 纯 C# 逻辑自检 `dotnet run --project tools/logic-smoke` **34 项断言全部通过**（无需 Unity License）。
+> **未验证项**：没有在真机 / ARM 设备上验证（x86_64 模拟器不被 Unity Android 构建支持，见 README「为什么暂时不装 Android Build Support」）。
 
 ## 技术要点
 
