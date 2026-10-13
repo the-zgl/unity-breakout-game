@@ -9,6 +9,12 @@
     <RootNamespace>Breakout.Tools</RootNamespace>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <InvariantGlobalization>true</InvariantGlobalization>
+    <!--
+      允许在只有更新 Runtime 的机器上运行（例如 CI 里只装了 .NET 8 runtime，
+      没有 net6.0 runtime 时，默认会报「找不到框架」）。加上 Major 级 roll-forward 后，
+      net6.0 的程序可以跑在 .NET 8 上。
+    -->
+    <RollForward>Major</RollForward>
   </PropertyGroup>
 
   <ItemGroup>
