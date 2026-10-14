@@ -1,6 +1,6 @@
 # Unity 休闲小游戏（打砖块）+ 自动化测试
 
-![CI](https://github.com/<你的用户名>/unity-breakout-game/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/the-zgl/unity-breakout-game/actions/workflows/ci.yml/badge.svg)
 ![Unity](https://img.shields.io/badge/Unity-2022.3%20LTS-blue)
 ![C#](https://img.shields.io/badge/C%23-10%2B-239120)
 ![Tests](https://img.shields.io/badge/tests-30-brightgreen)
@@ -135,7 +135,7 @@ git init
 git add .
 git commit -m "feat: Unity 打砖块小游戏 + 单元测试 + CI"
 git branch -M main
-git remote add origin https://github.com/<你的用户名>/unity-breakout-game.git
+git remote add origin https://github.com/the-zgl/unity-breakout-game.git
 git push -u origin main
 ```
 
