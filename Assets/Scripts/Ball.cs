@@ -17,6 +17,20 @@ namespace Breakout
 
         private Rigidbody2D rb;
 
+        /// <summary>
+        /// 惰性获取 Rigidbody2D。
+        /// 不依赖 Awake 的调用时序（某些情况下 Awake 可能晚于首次方法调用），
+        /// 避免 ResetBall / StopBall 里出现 NullReferenceException。
+        /// </summary>
+        private Rigidbody2D Rb
+        {
+            get
+            {
+                if (rb == null) rb = GetComponent<Rigidbody2D>();
+                return rb;
+            }
+        }
+
         private void Awake()
         {
             Instance = this;
@@ -36,9 +50,11 @@ namespace Breakout
         private void FixedUpdate()
         {
             // 保持速度大小恒定，避免物理运算带来的速度漂移
-            if (rb.velocity.sqrMagnitude > 0.001f)
+            var body = Rb;
+            if (body == null) return;
+            if (body.velocity.sqrMagnitude > 0.001f)
             {
-                rb.velocity = rb.velocity.normalized * speed;
+                body.velocity = body.velocity.normalized * speed;
             }
         }
 
@@ -47,6 +63,14 @@ namespace Breakout
             if (other.GetComponent<BottomZone>() != null)
             {
                 GameManager.Instance?.OnBallLost();
+
+                // 游戏结束后不再发球，否则会出现「命数已归零但仍在发射小球」的 bug
+                if (GameManager.Instance != null && GameManager.Instance.State.IsGameOver)
+                {
+                    StopBall();
+                    return;
+                }
+
                 ResetBall();
             }
         }
@@ -54,8 +78,18 @@ namespace Breakout
         /// <summary>把球放回场中央并重新给一个向上的初速度。</summary>
         public void ResetBall()
         {
+            var body = Rb;
+            if (body == null) return;
             transform.position = new Vector3(0f, -3.5f, 0f);
-            rb.velocity = startDirection.normalized * speed;
+            body.velocity = startDirection.normalized * speed;
+        }
+
+        /// <summary>停止小球运动（游戏结束时使用）。</summary>
+        public void StopBall()
+        {
+            var body = Rb;
+            if (body == null) return;
+            body.velocity = Vector2.zero;
         }
     }
 

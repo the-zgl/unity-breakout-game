@@ -42,12 +42,17 @@ namespace Breakout
 
         public void OnBrickDestroyed()
         {
+            // 游戏结束后不再计分
+            if (State.IsGameOver) return;
             State.AddScore(brickScore);
             ui?.Refresh(State);
         }
 
         public void OnBallLost()
         {
+            // 游戏已结束时不再重复扣命（避免生命变成负数）
+            if (State.IsGameOver) return;
+
             bool alive = State.LoseLife();
             ui?.Refresh(State);
             if (!alive) OnGameOver();
@@ -55,6 +60,13 @@ namespace Breakout
 
         public void BuyLife(int cost)
         {
+            // 游戏结束后不再允许购买（否则会出现「已结束却又能买命继续玩」的矛盾）
+            if (State.IsGameOver)
+            {
+                ui?.Toast("游戏已结束，按 R 重开");
+                return;
+            }
+
             if (State.TryPurchase(cost))
             {
                 State.AddLife();
